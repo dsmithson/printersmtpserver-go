@@ -1,0 +1,59 @@
+name: Build and Validate Docker Image
+
+on:
+  pull_request:
+    branches:
+      - '**'  # Run on all branches during pull request
+  push:
+    branches:
+      - main  # Run on push to main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v3
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        with:
+          platforms: arm64,amd64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+        with:
+          install: true
+
+      - name: Log in to Docker Hub
+        if: github.ref == 'refs/heads/main'
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build Docker image
+        id: build
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./build/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          tags: your-docker-username/printer-smtp-server:pr-${{ github.event.number }}
+          push: false
+
+      - name: Push Docker image to registry
+        if: github.ref == 'refs/heads/main'
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./build/Dockerfile
+          platforms: linux/amd64,linux/arm64
+          push: true
+          tags: |
+            your-docker-username/printer-smtp-server:latest
+            your-docker-username/printer-smtp-server:${{ github.sha }}
+
+      - name: Image digest
+        run: echo ${{ steps.build.outputs.digest }}
