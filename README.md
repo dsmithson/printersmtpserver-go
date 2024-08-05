@@ -68,6 +68,13 @@ You can run the application using Docker.
     SMTP_SMTPPORT=25 SMTP_OUTPUTPATH=/attachments dotnet run --project /src/SmtpServerService/SmtpServerService.csproj
     ```
 
+## Building the docker image
+The docker image should be built via a Github actions pipeline, but if you want to build it locally use this:
+
+    ```sh
+    docker buildx build --platform linux/amd64,linux/arm64,linux/arm/v7 -t dsmithson/printersmtpserver:latest -f ./build/Dockerfile .
+    ```
+
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

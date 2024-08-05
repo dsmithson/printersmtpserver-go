@@ -10,11 +10,12 @@ WORKDIR /app
 # Copy the code into the container
 COPY . .
 # Build the Go binary
-ARG TARGETOS=linux
-ARG TARGETARCH=amd64
+# ARG TARGETOS=linux
+# ARG TARGETARCH=amd64
 ARG GO_BINARY
 ENV GO_BINARY ${GO_BINARY:-./cmd/printersmtpserver}
-RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -mod vendor -o ./bin/app $GO_BINARY
+# RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -mod vendor -o ./bin/app $GO_BINARY
+RUN CGO_ENABLED=0 go build -mod vendor -o ./bin/app $GO_BINARY
 
 ############################
 # STEP 2 build a small image
