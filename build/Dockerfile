@@ -14,6 +14,7 @@ COPY . .
 # ARG TARGETARCH=amd64
 ARG GO_BINARY
 ENV GO_BINARY ${GO_BINARY:-./cmd/printersmtpserver}
+RUN go mod vendor
 # RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -mod vendor -o ./bin/app $GO_BINARY
 RUN CGO_ENABLED=0 go build -mod vendor -o ./bin/app $GO_BINARY
 
