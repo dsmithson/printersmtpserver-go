@@ -33,6 +33,10 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
+      - name: Get Short Commit Hash
+        id: vars
+        run: echo "COMMIT_HASH=${GITHUB_SHA::7}" >> $GITHUB_ENV
+
       - name: Build Docker image
         id: build
         uses: docker/build-push-action@v5
@@ -53,7 +57,7 @@ jobs:
           push: true
           tags: |
             dsmithson/printersmtpserver:latest
-            dsmithson/printersmtpserver:${{ github.sha }}
+            dsmithson/printersmtpserver:${{ env.COMMIT_HASH }}
 
       - name: Image digest
         run: echo ${{ steps.build.outputs.digest }}
