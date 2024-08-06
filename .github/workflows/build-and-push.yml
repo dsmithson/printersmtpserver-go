@@ -40,7 +40,7 @@ jobs:
           context: .
           file: ./build/Dockerfile
           platforms: linux/amd64,linux/arm64
-          tags: your-docker-username/printer-smtp-server:pr-${{ github.event.number }}
+          tags: dsmithson/printersmtpserver:pr-${{ github.event.number }}
           push: false
 
       - name: Push Docker image to registry
@@ -52,8 +52,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            your-docker-username/printer-smtp-server:latest
-            your-docker-username/printer-smtp-server:${{ github.sha }}
+            dsmithson/printersmtpserver:latest
+            dsmithson/printersmtpserver:${{ github.sha }}
 
       - name: Image digest
         run: echo ${{ steps.build.outputs.digest }}
