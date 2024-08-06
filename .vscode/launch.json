@@ -1,0 +1,18 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Launch PrinterSMTPServer",
+            "type": "go",
+            "request": "launch",
+            "mode": "debug",
+            "program": "${workspaceFolder}/cmd/printersmtpserver",
+            "env": {
+                "SMTP_PORT": "25000",
+                "SMTP_OUTPUTPATH": "/tmp/email"
+            },
+            "args": [],
+            "buildFlags": ""
+        }
+    ]
+}
